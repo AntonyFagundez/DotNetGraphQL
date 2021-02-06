@@ -25,10 +25,11 @@ namespace GraphQlApi
             services.AddPooledDbContextFactory<AppDbContext>(opt => 
                 opt.UseSqlServer(_configuration.GetConnectionString("GraphQLApp")
             ));
-            
+
             services
                 .AddGraphQLServer()
-                .AddQueryType<Query>();
+                .AddQueryType<Query>()
+                .AddProjections();
             
         }
 

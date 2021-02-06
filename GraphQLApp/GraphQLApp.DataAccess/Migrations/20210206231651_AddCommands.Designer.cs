@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GraphQLApp.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210206223323_AddCommands")]
+    [Migration("20210206231651_AddCommands")]
     partial class AddCommands
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace GraphQLApp.DataAccess.Migrations
 
                     b.HasIndex("PlatformId");
 
-                    b.ToTable("Command");
+                    b.ToTable("Commands");
                 });
 
             modelBuilder.Entity("GraphQLApp.DataAccess.Models.Platform", b =>

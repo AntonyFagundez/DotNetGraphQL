@@ -7,7 +7,7 @@ namespace GraphQLApp.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Command",
+                name: "Commands",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -18,9 +18,9 @@ namespace GraphQLApp.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Command", x => x.Id);
+                    table.PrimaryKey("PK_Commands", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Command_Platforms_PlatformId",
+                        name: "FK_Commands_Platforms_PlatformId",
                         column: x => x.PlatformId,
                         principalTable: "Platforms",
                         principalColumn: "Id",
@@ -28,15 +28,15 @@ namespace GraphQLApp.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Command_PlatformId",
-                table: "Command",
+                name: "IX_Commands_PlatformId",
+                table: "Commands",
                 column: "PlatformId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Command");
+                name: "Commands");
         }
     }
 }

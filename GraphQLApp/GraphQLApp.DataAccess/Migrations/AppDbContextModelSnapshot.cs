@@ -40,7 +40,7 @@ namespace GraphQLApp.DataAccess.Migrations
 
                     b.HasIndex("PlatformId");
 
-                    b.ToTable("Command");
+                    b.ToTable("Commands");
                 });
 
             modelBuilder.Entity("GraphQLApp.DataAccess.Models.Platform", b =>
