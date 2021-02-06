@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using GraphQLApp.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using GraphQLApp.GraphQL;
+using GraphQL.Server.Ui.Voyager;
 
 namespace GraphQlApi
 {
@@ -41,6 +42,13 @@ namespace GraphQlApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGraphQL();
+            });
+
+
+            app.UseGraphQLVoyager(new GraphQLVoyagerOptions() 
+            {
+                GraphQLEndPoint = "/graphql",
+                Path = "/Graphql-voyager"
             });
         }
     }
