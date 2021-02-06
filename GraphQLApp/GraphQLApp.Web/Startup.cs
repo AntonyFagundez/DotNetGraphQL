@@ -20,10 +20,12 @@ namespace GraphQlApi
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt => 
+            //Se agrega esto para evitar problemas de usar el mismo contexto en varias peticiones
+            //Revisar si se puede meter funciones asuncronas en las querys
+            services.AddPooledDbContextFactory<AppDbContext>(opt => 
                 opt.UseSqlServer(_configuration.GetConnectionString("GraphQLApp")
             ));
-
+            
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>();
