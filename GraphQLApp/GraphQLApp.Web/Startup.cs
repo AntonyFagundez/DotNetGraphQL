@@ -7,6 +7,7 @@ using GraphQLApp.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using GraphQLApp.GraphQL;
 using GraphQL.Server.Ui.Voyager;
+using GraphQLApp.GraphQL.Platforms;
 
 namespace GraphQlApi
 {
@@ -29,6 +30,7 @@ namespace GraphQlApi
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
+                .AddType<PlatformType>()
                 .AddProjections();
             
         }
