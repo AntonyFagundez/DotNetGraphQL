@@ -10,14 +10,20 @@ namespace GraphQLApp.GraphQL
     public class Query
     {
         [UseDbContext(typeof(AppDbContext))]
-        [UseProjection]
+       // [UseProjection]
+       //Si se usa este decorador sobreescribe los resolvers en base a la bd
+       //Si se usa un query type tienen que comentarse
+       [UseFiltering]
+       [UseSorting]
         public IQueryable<Platform> GetPlatform([ScopedService] AppDbContext context)
         {
             return context.Platforms;
         }
 
         [UseDbContext(typeof(AppDbContext))]
-        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        // [UseProjection]
         public IQueryable<Command> GetCommands([ScopedService] AppDbContext context)
         {
             return context.Commands;

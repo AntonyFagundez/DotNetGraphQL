@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using GraphQLApp.GraphQL;
 using GraphQL.Server.Ui.Voyager;
 using GraphQLApp.GraphQL.Platforms;
+using GraphQLApp.Web.GraphQL;
+using HotChocolate.AspNetCore.Subscriptions;
+using HotChocolate.AspNetCore;
 
 namespace GraphQlApi
 {
@@ -21,8 +24,8 @@ namespace GraphQlApi
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            //Se agrega esto para evitar problemas de usar el mismo contexto en varias peticiones
-            //Revisar si se puede meter funciones asuncronas en las querys
+            //Se agrega esto para evitar problemas de usar el mismo contexto en varias peticiones (paralelas)
+            //Revisar si se puede meter funciones asíncronas en las querys
             services.AddPooledDbContextFactory<AppDbContext>(opt => 
                 opt.UseSqlServer(_configuration.GetConnectionString("GraphQLApp")
             ));
@@ -30,9 +33,18 @@ namespace GraphQlApi
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
+                .AddSubscriptionType<Subscription>()
+                .AddMutationType<Mutation>()
                 .AddType<PlatformType>()
-                .AddProjections();
-            
+                .AddType<CommandType>()
+                .AddFiltering()
+                .AddSorting()
+                .AddInMemorySubscriptions(); // Para producción se debe manejar de otra manera
+
+            //.AddProjections();
+            //Añadir proyecciones incluye los resolvers automaticamente de las relaciones en la bd,
+            //y en tal caso de definir alguno generara problema con esta opción
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +54,10 @@ namespace GraphQlApi
                 app.UseDeveloperExceptionPage();
             }
 
+            //para soportar las subscripciones de GraphQL
+            app.UseWebSockets();
+           
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -50,7 +66,7 @@ namespace GraphQlApi
             });
 
 
-            app.UseGraphQLVoyager(new GraphQLVoyagerOptions() 
+            app.UseGraphQLVoyager(new GraphQLVoyagerOptions()
             {
                 GraphQLEndPoint = "/graphql",
                 Path = "/Graphql-voyager"
